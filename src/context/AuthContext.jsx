@@ -17,8 +17,8 @@ export const AuthProvider = ({ children }) => {
         // Verify token with /api/auth/me
         api.get('/auth/me')
           .then((res) => {
-            setUser(res.data.user);
-            localStorage.setItem('cctv_user', JSON.stringify(res.data.user));
+            setUser(res.data.data.user);
+            localStorage.setItem('cctv_user', JSON.stringify(res.data.data.user));
           })
           .catch(() => {
             logout();
@@ -35,18 +35,20 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     const response = await api.post('/auth/login', { username, password });
-    const { token, user: userData } = response.data;
+    const { token, user: userData } = response.data.data;
+
     localStorage.setItem('cctv_auth_token', token);
     localStorage.setItem('cctv_user', JSON.stringify(userData));
     setUser(userData);
     return userData;
   };
 
-  const logout = () => {
-    localStorage.removeItem('cctv_auth_token');
-    localStorage.removeItem('cctv_user');
-    setUser(null);
-  };
+  const logout = async () => {
+  try { await api.post('/auth/logout'); } catch (e) {}
+  localStorage.removeItem('cctv_auth_token');
+  localStorage.removeItem('cctv_user');
+  setUser(null);
+};
 
   const isAdmin = () => user?.role === 'Admin';
   const isOperator = () => user?.role === 'Admin' || user?.role === 'Operator';

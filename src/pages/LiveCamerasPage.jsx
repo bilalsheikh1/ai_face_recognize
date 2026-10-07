@@ -16,7 +16,7 @@ const LiveCamerasPage = () => {
   const fetchCameras = async () => {
     try {
       const res = await api.get('/cameras');
-      setCameras(res.data.cameras || []);
+      setCameras(res.data.data?.cameras || []);
     } catch (err) {
       console.error('Error fetching cameras:', err);
     }

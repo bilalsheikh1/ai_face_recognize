@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Tag, Button, Tooltip, Space, Badge } from 'antd';
 import { Maximize2, Layers, Camera as CameraIcon, RefreshCw, MapPin } from 'lucide-react';
+import LiveFeed from './LiveFeed';
 
 const CameraPlayerCard = ({ camera, onOpenZoneModal }) => {
   const [annotated, setAnnotated] = useState(true);
@@ -67,39 +68,7 @@ const CameraPlayerCard = ({ camera, onOpenZoneModal }) => {
         background: '#050811',
         overflow: 'hidden'
       }}>
-        {!streamError ? (
-          <img
-            src={streamUrl}
-            alt={camera.name}
-            onError={() => setStreamError(true)}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain'
-            }}
-          />
-        ) : (
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#ef4444'
-          }}>
-            <p style={{ fontWeight: 600 }}>🔴 STREAM OFFLINE / CONNECTING</p>
-            <Button size="small" icon={<RefreshCw size={13} />} onClick={handleRefresh} style={{ marginTop: '8px' }}>
-              Reconnect Stream
-            </Button>
-          </div>
-        )}
+        <LiveFeed camera={camera} />
 
         {/* Floating Controls Overlay */}
         <div style={{

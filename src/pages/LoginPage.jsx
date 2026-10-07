@@ -19,7 +19,7 @@ const LoginPage = () => {
       await login(values.username, values.password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Authentication failed. Please verify credentials.');
+      setError(err.response?.data?.message || 'Authentication failed. Please verify credentials.');
     } finally {
       setLoading(false);
     }
